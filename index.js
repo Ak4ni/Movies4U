@@ -60,7 +60,7 @@ app.use(bodyParser.json());
   {
     title: "Looper",
     producer: {
-      name: "Ram Bergman and James D. Stern",
+      name: "Rian Johnson",
       location: "U.S.A"
     },
     genre: "Action"
