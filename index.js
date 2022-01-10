@@ -21,8 +21,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-// import auth into index
-
 //default text repose when at /
 app.get("/", (req, res) => {
   res.send("Welcome to Movies4U!");
@@ -56,38 +54,7 @@ app.get("/movies/:Title", (req, res) => {
       res.status(500).send("Error: " + err);
     });
   });
-  
-// Add a movie to a user's list of favorites
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, {
-     $push: { FavoriteMovies: req.params.MovieID }
-   },
-   { new: true }, // This line makes sure that the updated document is returned
-  (err, updatedUser) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    } else {
-      res.json(updatedUser);
-    }
-  });
-});
 
-// Delete movie from list of favorite 
-app.delete('/users/:userName/movies/:title', (req, res) => {
-  Users.findOneAndUpdate({userName: req.params.userName}, {
-      $pull: {FavoriteMovies: req.params.title}
-  },
-  { new: true},
- (err, updatedUser) => {
-     if (err) {
-         console.error(err);
-         res.status(500).send('Error' + err);
-     } else {
-         res.json(updatedUser);
-     }
- });
-});
 
   //Get JSON genre info when looking for specific genre
   app.get("/genre/:Name", (req, res) =>{
@@ -184,7 +151,37 @@ app.delete('/users/:Username', (req, res) => {
     });
 });
 
+// Add a movie to a user's list of favorites
+app.post('/users/:Username/movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+     $push: { FavoriteMovies: req.params.MovieID }
+   },
+   { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    } else {
+      res.json(updatedUser);
+    }
+  });
+});
 
+// Delete movie from list of favorite 
+app.delete('/users/:userName/movies/:title', (req, res) => {
+  Users.findOneAndUpdate({userName: req.params.userName}, {
+      $pull: {FavoriteMovies: req.params.title}
+  },
+  { new: true},
+ (err, updatedUser) => {
+     if (err) {
+         console.error(err);
+         res.status(500).send('Error' + err);
+     } else {
+         res.json(updatedUser);
+     }
+ });
+});
 
 //Add/create a new user
 app.post("/users/:newUser", (req, res) => {
@@ -229,4 +226,3 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
   console.log("Your app is listening on port 8080.");
 });
-
