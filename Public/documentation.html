@@ -1,79 +1,137 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8">
-        <title>Documentation</title>
+        <title>Documantation</title>
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
     </head>
     <body>
-        <h1>Movies4U</h1>
-        <br />
+        <h1>API Documantation</h1>
         <p>
-          This web application will provide users with access to information about
-          different movies, directors, and genres. Users will be able to sign up,
-          update their personal information, and create a list of their favorite
-          movies.
+            Objective<br>
+            To build the server-side component of a “movies” web application. The web
+            application will provide users with access to information about different
+            movies, directors, and genres. Users will be able to sign up, update their
+            personal information, and create a list of their favorite movies.
+
         </p>
         <table>
-          <tr>
-            <th>Request</th>
-            <th>URL</th>
-            <th>HTTP Method</th>
-            <th>Response</th>
-          </tr>
-          <tr>
-            <td>Get a list of movies</td>
-            <td>/Movies</td>
-            <td>GET</td>
-            <td>Returns a JSON list of movies.</td>
-          </tr>
-          <tr>
-            <td>Get data about the movie</td>
-            <td>/movies/:title</td>
-            <td>GET</td>
-            <td>Returns a JSON data about a specific movie.</td>
-          </tr>
-          <tr>
-            <td>Return data about a genre by name/title.</td>
-            <td>/genres/:genre</td>
-            <td>GET</td>
-            <td>Returns a JSON data with movies of that ganre.</td>
-          </tr>
-          <tr>
-            <td>Get data about the director</td>
-            <td>/producers/:producerName</td>
-            <td>GET</td>
-            <td>Returns a JSON data about auther year.</td>
-          </tr>
-          <tr>
-            <td>Add new user</td>
-            <td>/users/:newUser</td>
-            <td>POST</td>
-            <td>Will add new user to JSON object.</td>
-          </tr>
-          <tr>
-            <td>Allow users to update their user information</td>
-            <td>/users/:Username</td>
-            <td>PUT</td>
-            <td>Returns the data fields that was updated by the user.</td>
-          </tr>
-          <tr>
-            <td>Delete the user</td>
-            <td>/users/:deleteUser</td>
-            <td>DELETE</td>
-            <td>Return a text confirming that the user was deleted.</td>
-          </tr>
-          <tr>
-            <td>Add new movie to list of favorite</td>
-            <td>/favorite/:movieName</td>
-            <td>POST</td>
-            <td>Returns a text confirming which movie was added successfully.</td>
-          </tr>
-          <tr>
-            <td>Delete movie from list of favorite</td>
-            <td>/favorite/:deleteMovie</td>
-            <td>DELETE</td>
-            <td>Returns a text confirming which movie was removed successfully.</td>
-          </tr>
+            <tr>
+                <th>Request</th>
+                <th>URL</th>
+                <th>HTTP Method</th>
+                <th>Response</th>
+                <th>Examples</th>
+            </tr>
+            <tr>
+                <td>Get a list of movies</td>
+                <td>/Movies</td>
+                <td>GET</td>
+                <td>Returns a JSON list of movies.</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Get data about the movie</td>
+                <td>/movies/:title</td>
+                <td>GET</td>
+                <td>Returns a JSON data about a specific movie.</td>
+                <td>"Genre":<br>
+                "Name": "Science fiction",<br>
+                "Description": "Science fiction (once known as scientific romance) is similar to fantasy, except stories in this genre
+                use scientific understanding to explain the universe that it takes place in. It generally includes or is centered on the
+                presumed effects or ramifications of computers or machines; travel through space, time or alternate universes; alien
+                life-forms; genetic engineering; or other such things. The science or technology used may or may not be very thoroughly
+                elaborated on."
+                "Director":<br>
+                "Name": "****",<br>
+                "Bio": "*****",<br>
+                "Birth": "****",<br>
+                "Death": "Null"<br>
+                "Actors": [],<br>
+                "_id": "61bf25c26072c5ac3ad42a4e",<br>
+                "Title": "******",<br>
+                "Description": "*******",<br>
+                "ImagePath": "**********",<br>
+                "Featured": true<br>
+                </td>
+            </tr>
+            <tr>
+                <td>Get data about author</td>
+                <td>/directors/:directorName</td>
+                <td>GET</td>
+                <td>Returns a JSON data about auther year.</td>
+                <td>"Name": "****",<br>
+                "Bio": "Updated Bio",<br>
+                "Birth": "*****",<br>
+                "Death": "Null"<br>  </td>
+            </tr>
+            <tr>
+                <td>Return data about a genre by name/title.</td>
+                <td>/genres/:genre</td>
+                <td>GET</td>
+                <td>Returns a JSON data with movies of that ganre.</td>
+                <td>"Name": "Drama", <br>
+                "Description": "Within film, television, and radio, drama is a genre of narrative fiction intended to be more serious
+                than humorous in tone, focusing on in-depth development of realistic characters who must deal with realistic emotional
+                struggles."</td>
+            </tr>
+            <tr>
+                <td>Get all users</td>
+                <td>/users</td>
+                <td>GET</td>
+                <td>Returns a JSON data with all users.</td>
+                <td>"_id": "61bf46e13d4592452bc88103", <br>
+                "userName": "chama3", <br>
+                "password": "409876", <br>
+                "email": "Chamaji@gmail.com", <br>
+                "Birthday": "1991-12-16T00:00:00.000Z", <br>
+                "FavoriteMovies": [ <br>
+                "61bf35126072c5ac3ad42a52",
+                "61bf32376072c5ac3ad42a4f"
+                ]</td>
+            </tr>
+            <tr>
+                <td>Add new user</td>
+                <td>/users/:newUser</td>
+                <td>POST</td>
+                <td>Will add new user to JSON object.</td>
+                <td>userName: xxxxx, <br>
+                password: xxxxxx, <br>
+                email: xxxxxx, <br>
+                Birthday: xx.xx.xxxx</td>
+            </tr>
+            <tr>
+                <td>Allow users to update their user information</td>
+                <td>/users/:Username</td>
+                <td>PUT</td>
+                <td>Returns the data fields that was updated by the user.</td>
+                <td>userName: NewName, <br>
+                password: Newpassword, <br>
+                email: New email, <br>
+                Birthday: New birthday</td>
+            </tr>
+            <tr>
+                <td>Delete the user</td>
+                <td>/users/:deleteUser</td>
+                <td>DELETE</td>
+                <td>Return a text confirming that the user was deleted.</td>
+                <td> Enter usersName</td>
+            </tr>
+            <tr>
+                <td>Add new movie to list of favorite</td>
+                <td>/users/:userName/movies/:title</td>
+                <td>POST</td>
+                <td>Returns a text confirming which movie was added successfully.</td>
+                <td>A text message indicating the title of the movie that was added</td>
+            </tr>
+            <tr>
+                <td>Delete movie from list of favorite</td>
+                <td>/users/:userName/movies/:title</td>
+                <td>DELETE</td>
+                <td>Returns a text confirming which movie was removed successfully.</td>
+                <td>A text message indicating the title of the movie that was deleted</td>
+            </tr>
         </table>
-      </body>
+    </body>
 </html>
