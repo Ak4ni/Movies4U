@@ -1,8 +1,9 @@
-
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const app = express();
+
+//mongodb
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
@@ -12,7 +13,7 @@ const Models = require('./models.js');
 
 
   //connect database
-  mongoose.connect('mongodb://localhost:27017/Movies4Udb', { useNewUrlParser: true, useUnifiedTopology: true });
+  mongoose.connect('mongodb://localhost:27017/Movies4Udb', { useNewUrlParser: true, useUnifiedTopology: false });
  
 //morgan
 app.use(morgan("common"));
@@ -56,8 +57,8 @@ app.get("/movies/:Title", (req, res) => {
   });
 
 
-  //Get JSON genre info when looking for specific genre
-  app.get("/genre/:Name", (req, res) =>{
+  //Get data about genre by name/title
+  app.get("/genre/:genre", (req, res) =>{
     Movies4Udb.findaOne({Name: req.params.Name })
     .then((genre) => {
       res.json(genre.Description);
@@ -69,10 +70,10 @@ app.get("/movies/:Title", (req, res) => {
   });
 
   // Get info on Directors
-  app.get("/director/:Name", (req, res) =>{
-    Movies4Udb.findaOne({Name: req.params.Name })
+  app.get("/director/:directorName", (req, res) =>{
+    Movies4Udb.findaOne({'Director.Name': req.params.Name })
     .then((director) => {
-      res.json(director);
+      res.json(movie.director);
     })
     .catch((err) =>{
       console.error(err);
@@ -94,7 +95,15 @@ app.get("/user", function (req, res) {
 });
 
 //Add a user
-app.post('/users/:newUser', (req, res) => {
+/* We’ll expect JSON in this format
+{
+  ID: Integer,
+  Username: String,
+  Password: String,
+  Email: String,
+  Birthday: Date
+}*/
+app.post('/users', (req, res) => {
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
@@ -120,8 +129,6 @@ app.post('/users/:newUser', (req, res) => {
     });
 });
 
-
-
 // Get a user by username
 app.get('/users/:Username', (req, res) => {
   Users.findOne({ Username: req.params.Username })
@@ -132,6 +139,28 @@ app.get('/users/:Username', (req, res) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
+});
+
+
+//Allow user to update their user info
+app.put('/users/:Username', (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+    {
+      Username: req.body.Username,
+      Password: req.body.Password,
+      Email: req.body.Email,
+      Birthday: req.body.Birthday
+    }
+  },
+  { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if(err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    } else {
+      res.json(updatedUser);
+    }
+  });
 });
 
 
@@ -168,46 +197,21 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 });
 
 // Delete movie from list of favorite 
-app.delete('/users/:userName/movies/:title', (req, res) => {
-  Users.findOneAndUpdate({userName: req.params.userName}, {
-      $pull: {FavoriteMovies: req.params.title}
-  },
-  { new: true},
- (err, updatedUser) => {
-     if (err) {
-         console.error(err);
-         res.status(500).send('Error' + err);
-     } else {
-         res.json(updatedUser);
-     }
- });
+app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+     $push: { FavoriteMovies: req.params.MovieID }
+   },
+   { new: true }, // This line makes sure that the updated document is returned
+  (err, updatedUser) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    } else {
+      res.json(updatedUser);
+    }
+  });
 });
 
-//Add/create a new user
-app.post("/users/:newUser", (req, res) => {
-  res.send("Registration complete.");
-});
-
-
-//Update user information
-app.put("/users/:username", (req, res) => {
-  res.send("User Profile Updated");
-});
-
-//Disable/delete the user profile
-app.delete("/users/:deleteUser", (req, res) => {
-  res.send("Profile disabled!");
-});
-
-//Add new movie to list of favorite
-app.post("/favorite/:movieName", (req, res) => {
-  res.send("Added to favorites!");
-});
-
-// Delete movie from list of favorite
-app.delete("/favorite/:deleteMovie", (req, res) => {
-  res.send("Removed from favorites.");
-});
 
 //Morgan Logger
 app.use(morgan('common'));
