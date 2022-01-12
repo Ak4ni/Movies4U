@@ -9,7 +9,7 @@ let movieSchema = mongoose.Schema({
     },
     Director: {
         Name: String,
-        Description: String
+        Bio: String
     },
     Actors: [String],
     ImagePath: String,
@@ -17,15 +17,18 @@ let movieSchema = mongoose.Schema({
 });
 
 let userSchema = mongoose.Schema({
-    userName: {type: String, required: true},
-    password: {type: String, required: true},
-    email: {type: String, required: true},
+    Username: {type: String, required: true},
+    Password: {type: String, require: true},
+    Email:{type: String, require: true},
     Birthday: Date,
-    FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
+    Favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movie'
+    }]
 });
 
+// this creates collections called db.movies and db.users (plurals and lower case)
 let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);
 
+// need to be imported into index.js
 module.exports.Movie = Movie;
 module.exports.User = User;
