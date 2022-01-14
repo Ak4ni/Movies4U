@@ -64,28 +64,28 @@ app.get("/movies/:Title", passport.authenticate('jwt', { session: false }), (req
 
 
   //Get data about genre by name/title
-  app.get("/genre/:genre", passport.authenticate('jwt', { session: false }), (req, res) =>{
-    Movies4Udb.findaOne({Name: req.params.Name })
-    .then((genre) => {
-      res.json(genre.Description);
+  app.get('/genres/:genre', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Movies4Udb.findOne({'Genre.Name': req.params.genre})
+    .then((movie)=>{
+        res.json(movie.Genre)
     })
-    .catch((err) =>{
-      console.error(err);
-      res.status(500).send("Error: " + err);
+    .catch((err)=>{
+        console.error(err);
+        res.status(500).send('Error' + err);
     });
-  });
+});
 
   // Get info on Directors
-  app.get("/director/:directorName", passport.authenticate('jwt', { session: false }), (req, res) =>{
-    Movies4Udb.findaOne({'Director.Name': req.params.Name })
-    .then((director) => {
-      res.json(movie.director);
+  app.get('/directors/:directorName', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Movies4Udb.findOne({'Director.Name': req.params.directorName})
+    .then((movie)=>{
+        res.json(movie.Director);
     })
-    .catch((err) =>{
-      console.error(err);
-      res.status(500).send("Error: " + err);
+    .catch((err)=>{
+        console.error(err);
+        res.status(500).send('Error' + err);
     });
-  });
+})
 
 
   // Get all users
