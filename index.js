@@ -3,9 +3,30 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const app = express();
 
+//Validation
+const { check, validationResults } = require('express-validator');
+
+//cors
+const cors = require('cors');
+  app.use(cors());
+
+  let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
+
 //mongodb
 const mongoose = require('mongoose');
 const Models = require('./models.js');
+const { method } = require("lodash");
 
   //DB for movies4u
   const Movies4Udb = Models.Movie;
@@ -23,21 +44,24 @@ app.use(morgan("common"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-//import auth/pasport
-let auth = require('./auth')(app);
+//import auth/paspo
+const passport = require('passport');
+  require('./passport'); 
+  let auth = require('./auth')(app);
+
 
 
 
 //default text repose when at /
 app.get("/", (req, res) => {
   res.send("Welcome to Movies4U!");
-}),
+});
 app.get('/documentation', (req, res) => {
   res.sendfile('/public/documentation.html', {root: __dirname})
 });
 
 //query db for movies
-app.get("/movies",  passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get("/movies", passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies4Udb.find()
   .then((movies)=> {
     res.status(201).json(movies);
@@ -118,7 +142,7 @@ app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) 
         Users
           .create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
@@ -233,6 +257,7 @@ app.use((err, req, res, next) => {
 });
 
 //Listener
-app.listen(8080, () => {
-  console.log("Your app is listening on port 8080.");
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0',() => {
+ console.log('Listening on Port ' + port);
 });
