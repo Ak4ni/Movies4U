@@ -10,7 +10,7 @@
 //mongodb
 const mongoose = require('mongoose');
 const Models = require('./models.js');
-const {check, validationResults} = require('express-validator');
+const {check, validationResult} = require('express-validator');
 
 //DB for movies4u
 const Movies4Udb = Models.Movie;
