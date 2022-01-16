@@ -34,7 +34,7 @@ const { method } = require("lodash");
 
 
   //connect database
-  mongoose.connect('process.env.MOVIES4U', { useNewUrlParser: true, useUnifiedTopology: false });
+  mongoose.connect(process.env.MOVIES4U, { useNewUrlParser: true, useUnifiedTopology: false });
  
 //morgan
 app.use(morgan("common"));
