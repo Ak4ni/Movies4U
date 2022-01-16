@@ -43,9 +43,6 @@ const cors = require('cors');
   app.use(cors());
   app.options('*', cors());
 
-
- 
-
   //morgan module use
   app.use(morgan("common"));
 
@@ -54,17 +51,18 @@ const cors = require('cors');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-//import auth/paspo
+//import passport and require module
 const passport = require('passport');
   require('./passport'); 
+
+//Ensures that Express is available in auth.js file
   let auth = require('./auth')(app);
 
 //Morgan Logger
 app.use(morgan('common'));
-app.get('/secreturl', (req, res) =>{
-    res.send('This is top SECRET content!')
-});
 
+//Use express static function so that request are routed to corresponding folders
+app.use(express,static('public'));
 
 // Error Handler
 app.use((err, req, res, next) => {
