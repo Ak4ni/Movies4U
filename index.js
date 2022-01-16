@@ -34,7 +34,7 @@ const { method } = require("lodash");
 
 
   //connect database
-  mongoose.connect('mongodb://localhost:27017/Movies4Udb', { useNewUrlParser: true, useUnifiedTopology: false });
+  mongoose.connect('mongodb+srv://ak4ni:Skk4ting-is-for-D0mm1es!?@movies4udb.akzt5.mongodb.net/Movies4Udb?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: false });
  
 //morgan
 app.use(morgan("common"));
