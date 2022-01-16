@@ -1,47 +1,56 @@
-const express = require("express");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const app = express();
+// to check
+// type 'mongo'
+// type 'show dbs'
+// type 'user myFlixDB'
+// type db.getCollectionNames()
 
-//Validation
-const { check, validationResults } = require('express-validator');
-
-//cors
-const cors = require('cors');
-  app.use(cors());
-
-  let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
-      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
-      return callback(new Error(message ), false);
-    }
-    return callback(null, true);
-  }
-}));
+// type 'db.movies.find().pretty()'
+// type 'db.users.find().pretty()'
 
 //mongodb
 const mongoose = require('mongoose');
 const Models = require('./models.js');
-const { method } = require("lodash");
+const { check, validationResults } = require('express-validator');
 
-  //DB for movies4u
-  const Movies4Udb = Models.Movie;
-  const Users = Models.User;
+//DB for movies4u
+const Movies4Udb = Models.Movie;
+const Users = Models.User;
+
+ //connect database
+ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: false });
+ var db = mongoose.connection;
+ db.on('error', console.error.bind(console, "MongoDB connection error"));
 
 
-  //connect database
-  mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: false });
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, "MongoDB connection error"));
+//express
+const express = require("express");
+
 //morgan
-app.use(morgan("common"));
+const morgan = require("morgan");
+
+//bodyparser
+const bodyParser = require("body-parser");
+
+//UUID
+const uuid = require('uuid');
+
+//get instance from express
+const app = express();
 
 
-//bodyParser
+//cors
+const cors = require('cors');
+  app.use(cors());
+  app.options('*', cors());
+
+
+ 
+
+  //morgan module use
+  app.use(morgan("common"));
+
+
+//bodyParser module use
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
@@ -50,6 +59,18 @@ const passport = require('passport');
   require('./passport'); 
   let auth = require('./auth')(app);
 
+//Morgan Logger
+app.use(morgan('common'));
+app.get('/secreturl', (req, res) =>{
+    res.send('This is top SECRET content!')
+});
+
+
+// Error Handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Ops, That's not here!");
+});
 
 
 
@@ -258,19 +279,6 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
   });
 });
 
-
-//Morgan Logger
-app.use(morgan('common'));
-app.get('/secreturl', (req, res) =>{
-    res.send('This is top SECRET content!')
-});
-
-
-// Error Handler
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Ops, That's not here!");
-});
 
 //Listener
 const port = process.env.PORT || 8080;
