@@ -10,7 +10,7 @@
 //mongodb
 const mongoose = require('mongoose');
 const Models = require('./models.js');
-
+const { check, validationResults } = require('express-validator');
 
 //DB for movies4u
 const Movies4Udb = Models.Movie;
@@ -163,7 +163,6 @@ app.post('/users',
 
   // check the validation object for errors
     let errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
@@ -208,8 +207,19 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
 
 
 //Allow user to update their user info
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
+app.put('/users/:Username', [
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non-alphanumeric characters, not allwed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be validated').isEmail()
+],
+(req, res) => {
+  let errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+    $set:
     {
       Username: req.body.Username,
       Password: req.body.Password,
@@ -217,7 +227,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (r
       Birthday: req.body.Birthday
     }
   },
-  { new: true }, // This line makes sure that the updated document is returned
+  { new: true },
   (err, updatedUser) => {
     if(err) {
       console.error(err);
@@ -226,6 +236,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (r
       res.json(updatedUser);
     }
   });
+});
 });
 
 
