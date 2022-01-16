@@ -237,7 +237,6 @@ app.put('/users/:Username', [
     }
   });
 });
-});
 
 
 // Delete a user by username
