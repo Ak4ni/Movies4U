@@ -35,7 +35,8 @@ const { method } = require("lodash");
 
   //connect database
   mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: false });
- 
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, "MongoDB connection error"));
 //morgan
 app.use(morgan("common"));
 
