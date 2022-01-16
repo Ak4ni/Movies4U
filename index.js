@@ -1,7 +1,7 @@
 // to check
 // type 'mongo'
 // type 'show dbs'
-// type 'user myFlixDB'
+// type 'user Movies4Udb'
 // type db.getCollectionNames()
 
 // type 'db.movies.find().pretty()'
