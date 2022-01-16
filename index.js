@@ -62,7 +62,7 @@ const passport = require('passport');
 app.use(morgan('common'));
 
 //Use express static function so that request are routed to corresponding folders
-app.use(express,static('public'));
+app.use(express.static('public'));
 
 // Error Handler
 app.use((err, req, res, next) => {
