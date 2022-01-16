@@ -1,8 +1,10 @@
 {
-  "name": "movies4u",
+  "name": "movie-api",
   "version": "1.0.0",
-  "description": "Free Movies",
   "main": "index.js",
+  "bin": {
+    "movie-api": "bin/server.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
@@ -20,18 +22,10 @@
     "morgan": "^1.10.0",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
-    "schema": "^0.2.1"
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Ak4ni/Movies4U.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Ak4ni/Movies4U/issues"
-  },
-  "homepage": "https://github.com/Ak4ni/Movies4U#readme"
+  "description": ""
 }
