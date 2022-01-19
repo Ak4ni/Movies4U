@@ -1,4 +1,4 @@
-## Server-side component of Movie App
+## Server-side component of Movie4U App
 
 ### <b> Project Description </b>
 
