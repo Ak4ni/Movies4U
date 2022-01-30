@@ -17,7 +17,7 @@ const Movies4Udb = Models.Movie;
 const Users = Models.User;
 
  //connect database
- mongoose.connect(process.env.MOVIES4U_1, { useNewUrlParser: true, useUnifiedTopology: false });
+ mongoose.connect(process.env.Movies4U_1, { useNewUrlParser: true, useUnifiedTopology: false });
 
 //express
 const express = require("express");
@@ -78,16 +78,17 @@ app.get('/documentation', (req, res) => {
 });
 
 //query db for movies
-app.get("/movies", function (req, res) {
-  Movies.find()
-    .then(function (movies) {
-      res.status(201).json(movies);
-    })
-    .catch(function (error) {
-      console.error(error);
-      res.status(500).send("Error: " + error);
-    });
+app.get("/movies",passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies4Udb.find()
+  .then((movies) => {
+    res.status(201).json(movies);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.status(500).send("Error: " + err);
+  });
 });
+
 
 
 //Get data specific by Title
