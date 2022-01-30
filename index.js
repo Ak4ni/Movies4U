@@ -79,7 +79,7 @@ app.get('/documentation', (req, res) => {
 
 //query db for movies
 app.get("/movies", function (req, res) {
-  Movies.find()
+  Movies4Udb.find()
     .then(function (movies) {
       res.status(201).json(movies);
     })
