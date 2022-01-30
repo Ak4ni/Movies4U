@@ -17,7 +17,7 @@ const Movies4Udb = Models.Movie;
 const Users = Models.User;
 
  //connect database
- mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: false });
+ mongoose.connect(process.env.MOVIES4U_1, { useNewUrlParser: true, useUnifiedTopology: false });
 
 //express
 const express = require("express");
