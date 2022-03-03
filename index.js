@@ -46,6 +46,7 @@ let allowedOrigins = [
   "https://themovies4u.netlify.app/",
   "https://themovies4u.herokuapp.com/movies",
   "https://themovies4u.herokuapp.com/login",
+  "https://themovies4u.herokuapp.com/users"
 
 ];
 
