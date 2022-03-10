@@ -44,13 +44,6 @@ let allowedOrigins = [
   "http://testsite.com",
   "http://localhost:1234",
   "https://themovies4u.netlify.app/",
-  "https://themovies4u.herokuapp.com/movies",
-  "https://themovies4u.herokuapp.com/login",
-  "https://themovies4u.herokuapp.com/users",
- "https://themovies4u.netlify.app/login",
- "https://themovies4u.netlify.app/movies",
- "https://themovies4u.netlify.app/user",
-
 ];
 
 app.use(
