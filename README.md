@@ -65,3 +65,5 @@ I tested endpoints in Postman to ensure that everything is working correctly bet
 ![alt password hashing](https://github.com/Ak4ni/Movies4U/blob/main/images/hash-password.png)
 
 ![alt validation email endpoint](https://github.com/Ak4ni/Movies4U/blob/main/images/validation-email-error.png)
+
+bbb
